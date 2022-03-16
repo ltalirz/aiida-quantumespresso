@@ -295,7 +295,7 @@ class BasePwCpInputGenerator(CalcJob):
         calcinfo.retrieve_list.extend(self.xml_filepaths)
         calcinfo.retrieve_list += settings.pop('ADDITIONAL_RETRIEVE_LIST', [])
         calcinfo.retrieve_list += self._internal_retrieve_list
-        if 'DIRECT_MINIMIZATION' in self.inputs.parameters:
+        if 'DIRECT_MINIMIZATION' in self.inputs.parameters.get_dict():
             calcinfo.retrieve_list.append(self._DIRECT_MINIMIZATION_OUT_FILE)
 
         # Retrieve the k-point directories with the xml files to the temporary folder
