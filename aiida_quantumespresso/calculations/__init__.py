@@ -695,7 +695,15 @@ class BasePwCpInputGenerator(CalcJob):
 
         # Check if the `DIRECT_MINIMIZATION` namelist has been specified
         if 'DIRECT_MINIMIZATION' in input_params:
-            namelists_toprint.append('DIRECT_MINIMIZATION')
+            # Must be specified directly after &ELECTRONS namelist or QE crashes
+            try:
+                el_index = namelists_toprint.index('ELECTRONS')
+            except ValueError as exc:
+                raise exceptions.InputValidationError(
+                    "Direct minimization requested by no 'ELECTRONS' namelist found."
+                ) from exc
+
+            namelists_toprint.insert(el_index + 1, 'DIRECT_MINIMIZATION')
 
         inputfile = ''
         for namelist_name in namelists_toprint:
